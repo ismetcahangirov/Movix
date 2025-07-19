@@ -1,7 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
 import Providers from "./providers/Providers";
 
 const geistSans = Geist({
@@ -22,9 +20,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+
+      </head>
       <Providers>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} font-montserrat antialiased bg-midnight`}
         >
           {children}
         </body>
