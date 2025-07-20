@@ -49,7 +49,7 @@ export default function Navbar() {
           <SearchInput />
         </div>
 
-        <div className="sign hidden md:flex items-center gap-4">
+        <div className="sign hidden md:flex items-center gap-6">
           <NavLink
             href="/login"
             className="text-sm whitespace-nowrap min-w-0 truncate"
