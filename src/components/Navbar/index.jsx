@@ -3,24 +3,24 @@
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
+import { FaUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import NavLink from "../NavLink";
 import Logo from "../Logo";
 import SearchInput from "../Search";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const currentUser = useSelector((state) => state.auth.currentUser);
 
   return (
-    <nav className="bg-transparent text-white  py-2">
+    <nav className="bg-transparent text-white py-2">
       <div className="flex justify-between items-center gap-4 md:gap-6">
         <NavLink href="/">
           <Logo />
         </NavLink>
 
-        <div
-          className="hidden md:flex items-center gap-2 md:gap-4 ml-2 flex-1 flex-nowrap overflow-hidden min-w-0"
-          style={{ minWidth: 0 }}
-        >
+        <div className="hidden md:flex items-center gap-2 md:gap-4 ml-2 flex-1 flex-nowrap overflow-hidden min-w-0">
           <NavLink
             href="/"
             className="text-sm whitespace-nowrap min-w-0 truncate"
@@ -50,18 +50,29 @@ export default function Navbar() {
         </div>
 
         <div className="sign hidden md:flex items-center gap-6">
-          <NavLink
-            href="/login"
-            className="text-sm whitespace-nowrap min-w-0 truncate"
-          >
-            Daxil ol
-          </NavLink>
-          <NavLink
-            href="/register"
-            className="text-sm whitespace-nowrap min-w-0 truncate"
-          >
-            Qeydiyyat
-          </NavLink>
+          {currentUser ? (
+            <NavLink href="/dashboard">
+              <div className="flex items-center gap-1">
+                <FaUserCircle size={22} />
+                <span>Profil</span>
+              </div>
+            </NavLink>
+          ) : (
+            <>
+              <NavLink
+                href="/login"
+                className="text-sm whitespace-nowrap min-w-0 truncate"
+              >
+                Daxil ol
+              </NavLink>
+              <NavLink
+                href="/register"
+                className="text-sm whitespace-nowrap min-w-0 truncate"
+              >
+                Qeydiyyat
+              </NavLink>
+            </>
+          )}
         </div>
 
         <button
@@ -93,12 +104,23 @@ export default function Navbar() {
           </NavLink>
 
           <div className="flex flex-col gap-2">
-            <NavLink href="/login" onClick={() => setMenuOpen(false)}>
-              Daxil ol
-            </NavLink>
-            <NavLink href="/register" onClick={() => setMenuOpen(false)}>
-              Qeydiyyat
-            </NavLink>
+            {currentUser ? (
+              <NavLink href="/dashboard" onClick={() => setMenuOpen(false)}>
+                <div className="flex items-center gap-1">
+                  <FaUserCircle size={20} />
+                  <span>Profil</span>
+                </div>
+              </NavLink>
+            ) : (
+              <>
+                <NavLink href="/login" onClick={() => setMenuOpen(false)}>
+                  Daxil ol
+                </NavLink>
+                <NavLink href="/register" onClick={() => setMenuOpen(false)}>
+                  Qeydiyyat
+                </NavLink>
+              </>
+            )}
           </div>
 
           <SearchInput />

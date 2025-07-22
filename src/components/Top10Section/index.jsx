@@ -1,10 +1,10 @@
 "use client";
 
-import { getTop10Movies } from "@/features/ProductsSlice";
+import { getTop10Movies } from "@/features/MovieSlice";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SlideItem from "../SlideItem";
 import Spinner from "../Spinner";
+import Slide from "../Slide";
 
 const Top10Section = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Top10Section = () => {
       <h2 className="text-white text-xl font-bold mb-4 text-left">
         Bu gün top 10 filmlər
       </h2>
-      <SlideItem items={top10Movies} />
+      <Slide items={top10Movies} />
     </section>
   );
 };

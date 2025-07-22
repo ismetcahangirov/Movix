@@ -8,12 +8,14 @@ const initialState = {
   popularMovies: [],
   top10Movies: [],
   movie: null,
+  similarMovies: [],
+  trailer: null,
   status: "idle",
   error: null,
 };
 
 export const getPopularMovies = createAsyncThunk(
-  "Movies/getPopularMovies",
+  "movies/getPopularMovies",
   async (page = 1) => {
     const response = await axios.get(
       `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`
@@ -23,7 +25,7 @@ export const getPopularMovies = createAsyncThunk(
 );
 
 export const getTop10Movies = createAsyncThunk(
-  "Movies/getTop10Movies",
+  "movies/getTop10Movies",
   async () => {
     const response = await axios.get(
       `${BASE_URL}/trending/movie/day?api_key=${API_KEY}`
@@ -33,7 +35,7 @@ export const getTop10Movies = createAsyncThunk(
 );
 
 export const getMovieById = createAsyncThunk(
-  "Movies/getMovieById",
+  "movies/getMovieById",
   async (movieId) => {
     const response = await axios.get(
       `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US`
@@ -42,8 +44,28 @@ export const getMovieById = createAsyncThunk(
   }
 );
 
-export const MoviesSlice = createSlice({
-  name: "Movies",
+export const getSimilarMovies = createAsyncThunk(
+  "movies/getSimilarMovies",
+  async (movieId) => {
+    const response = await axios.get(
+      `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US&page=1`
+    );
+    return response.data.results;
+  }
+);
+
+export const getMovieTrailer = createAsyncThunk(
+  "movies/getMovieTrailer",
+  async (movieId) => {
+    const response = await axios.get(
+      `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`
+    );
+    return response.data.results;
+  }
+);
+
+export const movieSlice = createSlice({
+  name: "movies",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -87,8 +109,28 @@ export const MoviesSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         state.movie = null;
+      })
+
+      .addCase(getSimilarMovies.pending, (state) => {
+        state.similarMovies = [];
+      })
+      .addCase(getSimilarMovies.fulfilled, (state, action) => {
+        state.similarMovies = action.payload;
+      })
+      .addCase(getSimilarMovies.rejected, (state) => {
+        state.similarMovies = [];
+      })
+
+      .addCase(getMovieTrailer.pending, (state) => {
+        state.trailer = null;
+      })
+      .addCase(getMovieTrailer.fulfilled, (state, action) => {
+        state.trailer = action.payload;
+      })
+      .addCase(getMovieTrailer.rejected, (state) => {
+        state.trailer = null;
       });
   },
 });
 
-export default MoviesSlice.reducer;
+export default movieSlice.reducer;

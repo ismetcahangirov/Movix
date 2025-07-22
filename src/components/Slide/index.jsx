@@ -1,18 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  FaAngleRight,
-  FaAngleLeft,
-  FaHeart,
-  FaThumbsDown,
-  FaBookmark,
-} from "react-icons/fa";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import SlideItem from "../SlideItem/SlideItem";
 
-const SlideItem = ({ items }) => {
+const Slide = ({ items }) => {
   const [index, setIndex] = useState(0);
   const router = useRouter();
+  const currentUser = useSelector((state) => state.auth.currentUser);
 
   const rightClick = () => {
     if (index < items.length - 6) {
@@ -27,37 +24,26 @@ const SlideItem = ({ items }) => {
   };
 
   const handleImageClick = (id) => {
-    router.push(`/movie/${id}`);
+    if (currentUser) {
+      router.push(`/movie/${id}`);
+    } else {
+      router.push("/login");
+    }
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full group">
       <div className="overflow-hidden">
         <div
           className="flex transition-all duration-300 gap-4"
           style={{ marginLeft: `-${index * 210}px` }}
         >
           {items.map((movie) => (
-            <div
+            <SlideItem
               key={movie.id}
-              className="relative min-w-[190px] h-[270px] group"
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt="poster"
-                onClick={() => handleImageClick(movie.id)}
-                className="rounded-md w-full h-full object-cover transition-transform duration-300 hover:scale-[1.05] cursor-pointer"
-              />
-
-              <div className="absolute top-2 left-2 text-white text-lg">
-                <FaBookmark className="cursor-pointer" />
-              </div>
-
-              <div className="absolute bottom-2 right-2 flex gap-3 text-white text-lg">
-                <FaHeart className="cursor-pointer" />
-                <FaThumbsDown className="cursor-pointer" />
-              </div>
-            </div>
+              movie={movie}
+              onClick={() => handleImageClick(movie.id)}
+            />
           ))}
         </div>
       </div>
@@ -83,4 +69,4 @@ const SlideItem = ({ items }) => {
   );
 };
 
-export default SlideItem;
+export default Slide;
