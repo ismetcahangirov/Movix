@@ -12,7 +12,7 @@ const Slide = ({ items }) => {
   const currentUser = useSelector((state) => state.auth.currentUser);
 
   const rightClick = () => {
-    if (index < items.length - 6) {
+    if (index < items.length - 4) {
       setIndex(index + 4);
     }
   };
@@ -57,7 +57,7 @@ const Slide = ({ items }) => {
         </button>
       )}
 
-      {index < items.length - 6 && (
+      {index < items.length - 4 && (
         <button
           onClick={rightClick}
           className="absolute opacity-0 group-hover:opacity-100 right-0 top-0 h-full px-3 flex items-center bg-black/30 text-white text-xl z-10 transition-all duration-500 ease-in-out"

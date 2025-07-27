@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import NavLink from "../NavLink";
 import Logo from "../Logo";
 import SearchInput from "../Search";
+import HamburgerMenu from "../HamburgerMenu";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -89,42 +90,9 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="mt-3 flex flex-col gap-3 md:hidden">
-          <NavLink href="/" onClick={() => setMenuOpen(false)}>
-            Əsas ekran
-          </NavLink>
-          <NavLink href="/new" onClick={() => setMenuOpen(false)}>
-            Yeni
-          </NavLink>
-          <NavLink href="/popular" onClick={() => setMenuOpen(false)}>
-            Populyar
-          </NavLink>
-          <NavLink href="/my-list" onClick={() => setMenuOpen(false)}>
-            Mənim siyahılarım
-          </NavLink>
-
-          <div className="flex flex-col gap-2">
-            {currentUser ? (
-              <NavLink href="/dashboard" onClick={() => setMenuOpen(false)}>
-                <div className="flex items-center gap-1">
-                  <FaUserCircle size={20} />
-                  <span>Profil</span>
-                </div>
-              </NavLink>
-            ) : (
-              <>
-                <NavLink href="/login" onClick={() => setMenuOpen(false)}>
-                  Daxil ol
-                </NavLink>
-                <NavLink href="/register" onClick={() => setMenuOpen(false)}>
-                  Qeydiyyat
-                </NavLink>
-              </>
-            )}
-          </div>
-
-          <SearchInput />
-        </div>
+        <>
+          <HamburgerMenu currentUser={currentUser} setMenuOpen={setMenuOpen} />
+        </>
       )}
     </nav>
   );

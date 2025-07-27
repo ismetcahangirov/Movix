@@ -3,15 +3,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "next/navigation";
-import { FaHeart, FaThumbsDown, FaBookmark } from "react-icons/fa";
-import Spinner from "@/components/Spinner";
-import Slide from "@/components/Slide";
-import TrailerSlide from "@/components/TrailerSlide";
 import {
   getMovieById,
   getSimilarMovies,
   getMovieTrailer,
 } from "@/features/MovieSlice";
+import Spinner from "@/components/Spinner";
+import TrailerSlide from "@/components/TrailerSlide";
+import Slide from "@/components/Slide";
+import SaveButton from "@/components/SaveButton";
 
 const MoviePage = () => {
   const dispatch = useDispatch();
@@ -36,21 +36,40 @@ const MoviePage = () => {
     ? trailer.filter((v) => v.type === "Trailer" && v.site === "YouTube")
     : [];
 
+  const getRatingColor = (rating) => {
+    if (rating >= 8) return "bg-green-500";
+    if (rating >= 5) return "bg-yellow-400";
+    return "bg-red-500";
+  };
+
+  const roundedRating = Math.round(movie.vote_average);
+
   return (
-    <div className="text-white max-w-6xl mx-auto py-10 px-4 min-h-screen">
+    <div className="text-white container mx-auto w-full max-w-[1280px] py-5 px-4">
       <div className="flex flex-col md:flex-row gap-8">
-        <img
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-          className="rounded-md w-full max-w-xs object-cover"
-        />
+        <div className="relative w-full max-w-xs">
+          <img
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+            className="rounded-md w-full object-cover"
+          />
+
+          <div className="absolute top-3 left-3 z-10">
+            <SaveButton movie={movie} />
+          </div>
+
+          <div
+            className={`absolute bottom-3 right-3 w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold ${getRatingColor(
+              roundedRating
+            )}`}
+          >
+            {roundedRating}
+          </div>
+        </div>
 
         <div className="flex flex-col justify-between h-full w-full">
           <div>
             <h1 className="text-3xl font-bold mb-4">{movie.title}</h1>
-            <p className="mb-2">
-              <strong>Reytinq: </strong> {movie.vote_average}
-            </p>
             <p className="mb-2">
               <strong>Buraxılış ili: </strong> {movie.release_date}
             </p>
@@ -58,18 +77,12 @@ const MoviePage = () => {
               <strong>Haqqında: </strong> {movie.overview}
             </p>
           </div>
-
-          <div className="flex gap-6 mt-6 text-3xl text-white cursor-pointer">
-            <FaBookmark />
-            <FaHeart />
-            <FaThumbsDown />
-          </div>
         </div>
       </div>
 
       <div className="flex flex-col gap-12">
         {trailers.length > 0 && (
-          <div className="my-12  h-[450px]">
+          <div className="my-12 h-[450px]">
             <h2 className="text-2xl font-bold mb-4">Trailerlar</h2>
             <TrailerSlide trailers={trailers} />
           </div>

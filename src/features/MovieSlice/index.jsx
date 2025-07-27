@@ -4,7 +4,28 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const API_KEY = "fa02e066d8475ad01c1a573064a25aa5";
 const BASE_URL = "https://api.themoviedb.org/3";
 
+const loadSavedMovies = () => {
+  if (typeof window === "undefined") return [];
+  try {
+    const getSavedMovie = localStorage.getItem("savedMovies");
+    if (getSavedMovie === null) return [];
+    return JSON.parse(getSavedMovie);
+  } catch {
+    return [];
+  }
+};
+
+const saveToLocalStorage = (savedMovies) => {
+  try {
+    const saveMovie = JSON.stringify(savedMovies);
+    localStorage.setItem("savedMovies", saveMovie);
+  } catch (err) {
+    console.log("error" + err);
+  }
+};
+
 const initialState = {
+  savedMovies: loadSavedMovies(),
   popularMovies: [],
   top10Movies: [],
   movie: null,
@@ -67,7 +88,18 @@ export const getMovieTrailer = createAsyncThunk(
 export const movieSlice = createSlice({
   name: "movies",
   initialState,
-  reducers: {},
+  reducers: {
+    toggleSaveMovie: (state, action) => {
+      const movie = action.payload;
+      const index = state.savedMovies.findIndex((m) => m.id === movie.id);
+      if (index >= 0) {
+        state.savedMovies.splice(index, 1);
+      } else {
+        state.savedMovies.push(movie);
+      }
+      saveToLocalStorage(state.savedMovies);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPopularMovies.pending, (state) => {
@@ -133,4 +165,5 @@ export const movieSlice = createSlice({
   },
 });
 
+export const { toggleSaveMovie } = movieSlice.actions;
 export default movieSlice.reducer;

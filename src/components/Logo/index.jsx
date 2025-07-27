@@ -3,9 +3,9 @@ import { FaGooglePlay } from "react-icons/fa";
 
 const Logo = () => {
   return (
-    <div className="text-lg text-amber-400 md:text-xl font-bold flex items-center gap-1">
+    <div className=" text-amber-400  font-bold flex items-center gap-1">
       <FaGooglePlay size={15} />
-      Movix
+      <div className="text-amber-400 text-xl md:text-2xl">Movix</div>
     </div>
   );
 };
