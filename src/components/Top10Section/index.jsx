@@ -20,7 +20,7 @@ const Top10Section = () => {
 
   return (
     <section className="container mx-auto max-w-[1280px] px-4 py-6 group relative">
-      <h2 className="text-white text-xl font-bold mb-4 text-left">
+      <h2 className="text-white text-3xl font-bold mb-6 text-left">
         Bu gün top 10 filmlər
       </h2>
       <Slide items={top10Movies} />

@@ -27,6 +27,7 @@ const saveToLocalStorage = (savedMovies) => {
 const initialState = {
   savedMovies: loadSavedMovies(),
   popularMovies: [],
+  newMovies: [],
   top10Movies: [],
   movie: null,
   similarMovies: [],
@@ -40,6 +41,16 @@ export const getPopularMovies = createAsyncThunk(
   async (page = 1) => {
     const response = await axios.get(
       `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`
+    );
+    return response.data.results;
+  }
+);
+
+export const getNewMovies = createAsyncThunk(
+  "movies/getNewMovies",
+  async (page = 1) => {
+    const response = await axios.get(
+      `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`
     );
     return response.data.results;
   }
@@ -108,7 +119,7 @@ export const movieSlice = createSlice({
       })
       .addCase(getPopularMovies.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.popularMovies = action.payload;
+        state.popularMovies = [...state.popularMovies, ...action.payload];
       })
       .addCase(getPopularMovies.rejected, (state, action) => {
         state.status = "failed";
@@ -161,6 +172,18 @@ export const movieSlice = createSlice({
       })
       .addCase(getMovieTrailer.rejected, (state) => {
         state.trailer = null;
+      })
+      .addCase(getNewMovies.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getNewMovies.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.newMovies = [...state.newMovies, ...action.payload];
+      })
+      .addCase(getNewMovies.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });

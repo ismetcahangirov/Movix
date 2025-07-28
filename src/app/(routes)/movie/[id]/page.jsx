@@ -12,6 +12,7 @@ import Spinner from "@/components/Spinner";
 import TrailerSlide from "@/components/TrailerSlide";
 import Slide from "@/components/Slide";
 import SaveButton from "@/components/SaveButton";
+import Rating from "@/components/Rating";
 
 const MoviePage = () => {
   const dispatch = useDispatch();
@@ -36,14 +37,6 @@ const MoviePage = () => {
     ? trailer.filter((v) => v.type === "Trailer" && v.site === "YouTube")
     : [];
 
-  const getRatingColor = (rating) => {
-    if (rating >= 8) return "bg-green-500";
-    if (rating >= 5) return "bg-yellow-400";
-    return "bg-red-500";
-  };
-
-  const roundedRating = Math.round(movie.vote_average);
-
   return (
     <div className="text-white container mx-auto w-full max-w-[1280px] py-5 px-4">
       <div className="flex flex-col md:flex-row gap-8">
@@ -58,12 +51,8 @@ const MoviePage = () => {
             <SaveButton movie={movie} />
           </div>
 
-          <div
-            className={`absolute bottom-3 right-3 w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold ${getRatingColor(
-              roundedRating
-            )}`}
-          >
-            {roundedRating}
+          <div className="absolute bottom-3 right-3">
+            <Rating rating={movie.vote_average} size="w-12 h-12 text-lg" />
           </div>
         </div>
 

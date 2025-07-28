@@ -12,14 +12,14 @@ const Slide = ({ items }) => {
   const currentUser = useSelector((state) => state.auth.currentUser);
 
   const rightClick = () => {
-    if (index < items.length - 4) {
-      setIndex(index + 4);
+    if (index < items.length - 6) {
+      setIndex(index + 6);
     }
   };
 
   const leftClick = () => {
     if (index > 0) {
-      setIndex(index - 4);
+      setIndex(index - 6);
     }
   };
 

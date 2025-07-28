@@ -2,16 +2,9 @@
 
 import React from "react";
 import SaveButton from "../SaveButton";
+import Rating from "../Rating";
 
 const SlideItem = ({ movie, onClick }) => {
-  const getRatingColor = (rating) => {
-    if (rating >= 8) return "bg-green-500";
-    if (rating >= 5) return "bg-yellow-400";
-    return "bg-red-500";
-  };
-
-  const roundedRating = Math.round(movie.vote_average);
-
   return (
     <div
       className="relative min-w-[190px] h-[270px] group cursor-pointer"
@@ -27,12 +20,8 @@ const SlideItem = ({ movie, onClick }) => {
         <SaveButton movie={movie} />
       </div>
 
-      <div
-        className={`absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${getRatingColor(
-          roundedRating
-        )}`}
-      >
-        {roundedRating}
+      <div className="absolute bottom-2 right-2">
+        <Rating rating={movie.vote_average} />
       </div>
     </div>
   );
