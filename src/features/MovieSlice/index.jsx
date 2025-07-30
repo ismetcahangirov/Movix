@@ -28,13 +28,25 @@ const initialState = {
   savedMovies: loadSavedMovies(),
   popularMovies: [],
   newMovies: [],
+  upcomingMovies: [],
   top10Movies: [],
+  topRatedMovies: [],
   movie: null,
   similarMovies: [],
   trailer: null,
   status: "idle",
   error: null,
 };
+
+export const getTopRatedMovies = createAsyncThunk(
+  "movies/getTopRatedMovies",
+  async (page = 1) => {
+    const response = await axios.get(
+      `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`
+    );
+    return response.data.results;
+  }
+);
 
 export const getPopularMovies = createAsyncThunk(
   "movies/getPopularMovies",
@@ -51,6 +63,16 @@ export const getNewMovies = createAsyncThunk(
   async (page = 1) => {
     const response = await axios.get(
       `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`
+    );
+    return response.data.results;
+  }
+);
+
+export const getUpcomingMovies = createAsyncThunk(
+  "movies/getUpcomingMovies",
+  async (page = 1) => {
+    const response = await axios.get(
+      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`
     );
     return response.data.results;
   }
@@ -111,6 +133,7 @@ export const movieSlice = createSlice({
       saveToLocalStorage(state.savedMovies);
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(getPopularMovies.pending, (state) => {
@@ -182,6 +205,30 @@ export const movieSlice = createSlice({
         state.newMovies = [...state.newMovies, ...action.payload];
       })
       .addCase(getNewMovies.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(getUpcomingMovies.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getUpcomingMovies.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.upcomingMovies = [...state.upcomingMovies, ...action.payload];
+      })
+      .addCase(getUpcomingMovies.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(getTopRatedMovies.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getTopRatedMovies.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.topRatedMovies = [...state.topRatedMovies, ...action.payload];
+      })
+      .addCase(getTopRatedMovies.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
