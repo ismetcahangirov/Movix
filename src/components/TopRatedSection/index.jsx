@@ -24,7 +24,7 @@ const TopRatedSection = () => {
       <h2 className="text-white text-3xl font-bold mb-6 text-left flex gap-1">
         <FaStar className="text-yellow-400" /> Ən Yüksək Reytinqli Filmlər
       </h2>
-      <Slide items={topRatedMovies} />
+      <Slide items={topRatedMovies} name={"topRated"} />
     </section>
   );
 };

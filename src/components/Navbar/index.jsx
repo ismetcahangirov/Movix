@@ -21,7 +21,7 @@ export default function Navbar() {
           <Logo />
         </NavLink>
 
-        <div className="hidden md:flex items-center gap-2 md:gap-4 ml-2 flex-1 flex-nowrap overflow-hidden min-w-0">
+        <div className="hidden md:flex items-center gap-2 md:gap-4 ml-2 flex-1 flex-nowrap min-w-0">
           <NavLink
             href="/"
             className="text-sm whitespace-nowrap min-w-0 truncate"

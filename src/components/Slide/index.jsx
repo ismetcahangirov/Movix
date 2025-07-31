@@ -1,18 +1,20 @@
-"use client";
-
-import React, { useState } from "react";
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import SlideItem from "../SlideItem/SlideItem";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const Slide = ({ items }) => {
   const [index, setIndex] = useState(0);
   const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
 
+  const uniqueItems = items.filter(
+    (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
+  );
+
   const rightClick = () => {
-    if (index < items.length - 6) {
+    if (index < uniqueItems.length - 6) {
       setIndex(index + 6);
     }
   };
@@ -38,9 +40,9 @@ const Slide = ({ items }) => {
           className="flex transition-all duration-300 gap-4"
           style={{ marginLeft: `-${index * 210}px` }}
         >
-          {items.map((movie) => (
+          {uniqueItems.map((movie) => (
             <SlideItem
-              key={movie.id}
+              key={`${movie.id}`}
               movie={movie}
               onClick={() => handleImageClick(movie.id)}
             />
@@ -57,7 +59,7 @@ const Slide = ({ items }) => {
         </button>
       )}
 
-      {index < items.length - 4 && (
+      {index < uniqueItems.length - 4 && (
         <button
           onClick={rightClick}
           className="absolute opacity-0 group-hover:opacity-100 right-0 top-0 h-full px-3 flex items-center bg-black/30 text-white text-xl z-10 transition-all duration-500 ease-in-out"
@@ -68,5 +70,4 @@ const Slide = ({ items }) => {
     </div>
   );
 };
-
 export default Slide;

@@ -23,7 +23,7 @@ const Top10Section = () => {
       <h2 className="text-white text-3xl font-bold mb-6 text-left">
         Bu gün top 10 filmlər
       </h2>
-      <Slide items={top10Movies} />
+      <Slide items={top10Movies} name={"top10"} />
     </section>
   );
 };

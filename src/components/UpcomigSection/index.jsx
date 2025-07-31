@@ -23,7 +23,7 @@ const UpcomingSection = () => {
       <h2 className="text-white text-3xl font-bold mb-6 text-left">
         Gələcək Filmlər
       </h2>
-      <Slide items={upcomingMovies} />
+      <Slide items={upcomingMovies} name={"upcoming"} />
     </section>
   );
 };

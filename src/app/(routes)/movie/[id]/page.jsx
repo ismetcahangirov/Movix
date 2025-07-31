@@ -44,7 +44,7 @@ const MoviePage = () => {
           <img
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
-            className="rounded-md w-full object-cover"
+            className="rounded-md w-full object-cover h-[350px]"
           />
 
           <div className="absolute top-3 left-3 z-10">

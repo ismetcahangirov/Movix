@@ -19,9 +19,7 @@ const saveToLocalStorage = (savedMovies) => {
   try {
     const saveMovie = JSON.stringify(savedMovies);
     localStorage.setItem("savedMovies", saveMovie);
-  } catch (err) {
-    console.log("error" + err);
-  }
+  } catch {}
 };
 
 const initialState = {
@@ -36,6 +34,8 @@ const initialState = {
   trailer: null,
   status: "idle",
   error: null,
+  searchResults: [],
+  searchStatus: "idle",
 };
 
 export const getTopRatedMovies = createAsyncThunk(
@@ -118,6 +118,18 @@ export const getMovieTrailer = createAsyncThunk(
   }
 );
 
+export const searchMovies = createAsyncThunk(
+  "movies/searchMovies",
+  async (value) => {
+    const response = await axios.get(
+      `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${encodeURIComponent(
+        value
+      )}&page=1&include_adult=false`
+    );
+    return response.data.results;
+  }
+);
+
 export const movieSlice = createSlice({
   name: "movies",
   initialState,
@@ -132,8 +144,11 @@ export const movieSlice = createSlice({
       }
       saveToLocalStorage(state.savedMovies);
     },
+    clearSearchResults: (state) => {
+      state.searchResults = [];
+      state.searchStatus = "idle";
+    },
   },
-
   extraReducers: (builder) => {
     builder
       .addCase(getPopularMovies.pending, (state) => {
@@ -196,6 +211,7 @@ export const movieSlice = createSlice({
       .addCase(getMovieTrailer.rejected, (state) => {
         state.trailer = null;
       })
+
       .addCase(getNewMovies.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -208,6 +224,7 @@ export const movieSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+
       .addCase(getUpcomingMovies.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -220,6 +237,7 @@ export const movieSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+
       .addCase(getTopRatedMovies.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -231,9 +249,24 @@ export const movieSlice = createSlice({
       .addCase(getTopRatedMovies.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+
+      .addCase(searchMovies.pending, (state) => {
+        state.searchStatus = "loading";
+        state.error = null;
+        state.searchResults = [];
+      })
+      .addCase(searchMovies.fulfilled, (state, action) => {
+        state.searchStatus = "succeeded";
+        state.searchResults = action.payload;
+      })
+      .addCase(searchMovies.rejected, (state, action) => {
+        state.searchStatus = "failed";
+        state.error = action.error.message;
+        state.searchResults = [];
       });
   },
 });
 
-export const { toggleSaveMovie } = movieSlice.actions;
+export const { toggleSaveMovie, clearSearchResults } = movieSlice.actions;
 export default movieSlice.reducer;
