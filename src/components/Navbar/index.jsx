@@ -17,9 +17,7 @@ export default function Navbar() {
   return (
     <nav className="bg-transparent text-white py-2">
       <div className="flex justify-between items-center gap-4 md:gap-6">
-        <NavLink href="/">
-          <Logo />
-        </NavLink>
+        <Logo />
 
         <div className="hidden md:flex items-center gap-2 md:gap-4 ml-2 flex-1 flex-nowrap min-w-0">
           <NavLink

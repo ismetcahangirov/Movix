@@ -25,11 +25,9 @@ export default function RootLayout({ children }) {
 
       </head>
       <Providers>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} font-montserrat antialiased bg-midnight`}
-        >
-          {children}
-        </body>
+
+        {children}
+
       </Providers>
 
     </html>
