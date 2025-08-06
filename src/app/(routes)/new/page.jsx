@@ -34,21 +34,26 @@ const NewPage = () => {
     [status]
   );
 
+  const uniqueMovies = newMovies.filter(
+    (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
+  );
+
   return (
     <div className="text-white container mx-auto max-w-[1280px] py-5 px-4">
       <h2 className="text-3xl font-bold mb-6">Yeni Filmlər</h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {newMovies.map((movie, index) => {
+        {uniqueMovies.map((movie, index) => {
           const onClick = () => router.push(`/movie/${movie.id}`);
 
-          if (index === newMovies.length - 1) {
+          if (index === uniqueMovies.length - 1) {
             return (
               <div key={movie.id} ref={lastElementRef}>
                 <SlideItem movie={movie} onClick={onClick} />
               </div>
             );
           }
+
           return <SlideItem key={movie.id} movie={movie} onClick={onClick} />;
         })}
       </div>
