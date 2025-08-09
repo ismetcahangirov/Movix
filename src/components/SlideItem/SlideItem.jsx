@@ -1,28 +1,27 @@
-"use client";
+import React, { useRef, useEffect } from "react";
 
-import React from "react";
-import SaveButton from "../SaveButton";
-import Rating from "../Rating";
+const SlideItem = ({ movie, onClick, reportWidth }) => {
+  const imgRef = useRef(null);
 
-const SlideItem = ({ movie, onClick }) => {
+  useEffect(() => {
+    if (imgRef.current) {
+      const width = imgRef.current.offsetWidth;
+      reportWidth && reportWidth(width);
+    }
+  }, [reportWidth]);
+
   return (
     <div
-      className="relative min-w-[190px] h-[270px] group cursor-pointer"
+      className="relative cursor-pointer"
       onClick={onClick}
+      style={{ flexShrink: 0 }}
     >
       <img
-        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        ref={imgRef}
+        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
         alt={movie.title}
-        className="rounded-md w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.05]"
+        className="min-w-[250px] md:min-w-[190px] h-[250px]  md:h-[270px] object-cover block"
       />
-
-      <div className="absolute top-2 left-2 z-10">
-        <SaveButton movie={movie} />
-      </div>
-
-      <div className="absolute bottom-2 right-2">
-        <Rating rating={movie.vote_average} />
-      </div>
     </div>
   );
 };

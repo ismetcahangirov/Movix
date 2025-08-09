@@ -3,7 +3,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { clearSearchResults } from "@/features/MovieSlice";
+import { clearSearchResults } from "@/app/redux/features/MovieSlice";
 import Spinner from "../Spinner";
 
 const SearchResults = () => {

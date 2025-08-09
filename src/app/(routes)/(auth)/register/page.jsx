@@ -1,73 +1,47 @@
 "use client";
 
 import React, { useState } from "react";
-import Input from "@/components/Input";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "@/features/authSlice";
 import { useRouter } from "next/navigation";
+import { registerUser } from "@/firebase/auth";
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
-  const users = useSelector((state) => state.auth.users);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
-    age: "",
-    gender: "",
     password: "",
     confirmPassword: "",
+    username: "",
   });
 
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!formData.username.trim())
-      newErrors.username = "İstifadəçi adı daxil edin";
     if (!formData.email.trim()) newErrors.email = "Email daxil edin";
-    if (!formData.age.trim()) newErrors.age = "Yaş daxil edin";
-    if (!formData.gender) newErrors.gender = "Cins seçin";
     if (!formData.password) newErrors.password = "Şifrə daxil edin";
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Şifrələr uyğun deyil";
+    if (!formData.username.trim()) newErrors.username = "Username daxil edin";
 
-    const emailExists = users.find((u) => u.email === formData.email);
-    if (emailExists) newErrors.email = "Bu email artıq qeydiyyatdadır";
-
-    if (Object.keys(newErrors).length > 0) {
+    if (Object.keys(newErrors).length) {
       setErrors(newErrors);
       return;
     }
 
-    dispatch(
-      registerUser({
-        username: formData.username,
-        email: formData.email,
-        age: formData.age,
-        gender: formData.gender,
-        password: formData.password,
-      })
-    );
-
-    setFormData({
-      username: "",
-      email: "",
-      age: "",
-      gender: "",
-      password: "",
-      confirmPassword: "",
-    });
-
-    router.push("/login");
+    try {
+      await registerUser(formData.email, formData.password, formData.username);
+      router.push("/login");
+    } catch (error) {
+      setErrors({ email: "Bu email artıq qeydiyyatdadır" });
+    }
   };
 
   return (
@@ -78,83 +52,57 @@ const RegisterPage = () => {
       >
         <h2 className="text-3xl font-bold text-white mb-6">Register</h2>
 
-        <Input
-          label="Username"
+        <label className="block mb-1 text-white">Username</label>
+        <input
           type="text"
           name="username"
+          className="w-full p-2 rounded mb-2"
           value={formData.username}
           onChange={handleChange}
-          error={errors.username}
         />
+        {errors.username && (
+          <p className="text-red-500 text-sm mb-2">{errors.username}</p>
+        )}
 
-        <Input
-          label="Email"
-          type="text"
+        <label className="block mb-1 text-white">Email</label>
+        <input
+          type="email"
           name="email"
+          className="w-full p-2 rounded mb-2"
           value={formData.email}
           onChange={handleChange}
-          error={errors.email}
         />
+        {errors.email && (
+          <p className="text-red-500 text-sm mb-2">{errors.email}</p>
+        )}
 
-        <Input
-          label="Age"
-          type="number"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-          error={errors.age}
-        />
-
-        <div className="mb-4">
-          <label className="block mb-2 text-white font-medium">Gender</label>
-          <div className="flex gap-6 text-white">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="gender"
-                value="male"
-                checked={formData.gender === "male"}
-                onChange={handleChange}
-              />
-              Male
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="gender"
-                value="female"
-                checked={formData.gender === "female"}
-                onChange={handleChange}
-              />
-              Female
-            </label>
-          </div>
-          {errors.gender && (
-            <p className="text-red-500 text-sm mt-1">{errors.gender}</p>
-          )}
-        </div>
-
-        <Input
-          label="Password"
+        <label className="block mb-1 text-white">Password</label>
+        <input
           type="password"
           name="password"
+          className="w-full p-2 rounded mb-2"
           value={formData.password}
           onChange={handleChange}
-          error={errors.password}
         />
+        {errors.password && (
+          <p className="text-red-500 text-sm mb-2">{errors.password}</p>
+        )}
 
-        <Input
-          label="Confirm Password"
+        <label className="block mb-1 text-white">Confirm Password</label>
+        <input
           type="password"
           name="confirmPassword"
+          className="w-full p-2 rounded mb-2"
           value={formData.confirmPassword}
           onChange={handleChange}
-          error={errors.confirmPassword}
         />
+        {errors.confirmPassword && (
+          <p className="text-red-500 text-sm mb-2">{errors.confirmPassword}</p>
+        )}
 
         <button
           type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded mt-4 transition"
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded mt-4"
         >
           Register
         </button>

@@ -1,51 +1,47 @@
 "use client";
 
 import React, { useState } from "react";
-import Input from "@/components/Input";
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/features/authSlice";
+import { loginUser, loginWithGoogle } from "@/firebase/auth";
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
 
-  const users = useSelector((state) => state.auth.users);
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
     if (!formData.email.trim()) newErrors.email = "Email daxil edin";
     if (!formData.password.trim()) newErrors.password = "Şifrə daxil edin";
 
-    if (Object.keys(newErrors).length > 0) {
+    if (Object.keys(newErrors).length) {
       setErrors(newErrors);
       return;
     }
 
-    const findUser = users.find(
-      (user) =>
-        user.email === formData.email && user.password === formData.password
-    );
-
-    if (findUser) {
-      dispatch(loginUser(findUser));
+    try {
+      await loginUser(formData.email, formData.password);
       router.push("/dashboard");
-    } else {
+    } catch (error) {
       setErrors({ email: "Email və ya şifrə səhvdir" });
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await loginWithGoogle();
+      router.push("/dashboard");
+    } catch (error) {
+      alert("Google ilə giriş zamanı səhv baş verdi: " + error.message);
     }
   };
 
@@ -57,28 +53,43 @@ const LoginPage = () => {
       >
         <h2 className="text-3xl font-bold text-white mb-6">Login</h2>
 
-        <Input
-          label="Email"
-          type="text"
+        <label className="block mb-1 text-white">Email</label>
+        <input
+          type="email"
           name="email"
+          className="w-full p-2 rounded mb-2"
           value={formData.email}
           onChange={handleChange}
-          error={errors.email}
         />
-        <Input
-          label="Password"
+        {errors.email && (
+          <p className="text-red-500 text-sm mb-2">{errors.email}</p>
+        )}
+
+        <label className="block mb-1 text-white">Password</label>
+        <input
           type="password"
           name="password"
+          className="w-full p-2 rounded mb-2"
           value={formData.password}
           onChange={handleChange}
-          error={errors.password}
         />
+        {errors.password && (
+          <p className="text-red-500 text-sm mb-2">{errors.password}</p>
+        )}
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mt-4 transition"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mt-4"
         >
           Login
+        </button>
+
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded mt-4"
+        >
+          Google ilə daxil ol
         </button>
       </form>
     </div>

@@ -2,7 +2,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { FaBookmark } from "react-icons/fa";
-import { toggleSaveMovie } from "@/features/MovieSlice";
+import { toggleSaveMovie } from "@/app/redux/features/MovieSlice";
 
 const SaveButton = ({ movie }) => {
   const dispatch = useDispatch();

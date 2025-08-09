@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Spinner";
 import Slide from "../Slide";
-import { getTopRatedMovies } from "@/features/MovieSlice";
+import { getTopRatedMovies } from "@/app/redux/features/MovieSlice";
 import { FaStar } from "react-icons/fa";
 
 const TopRatedSection = () => {

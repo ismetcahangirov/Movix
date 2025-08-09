@@ -1,12 +1,13 @@
 "use client";
 
+import authReducer from "./features/authSlice";
+import movieReducer from "./features/MovieSlice";
+
 const { configureStore } = require("@reduxjs/toolkit");
-import authReducer from "@/features/authSlice";
-import moviesReducer from "@/features/MovieSlice";
 
 export const store = configureStore({
   reducer: {
-    movies: moviesReducer,
+    movies: movieReducer,
     auth: authReducer,
   },
 });

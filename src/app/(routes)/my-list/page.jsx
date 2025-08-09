@@ -1,6 +1,6 @@
 "use client";
 
-import SlideItem from "@/components/SlideItem/SlideItem";
+import Card from "@/components/Card";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -22,7 +22,7 @@ const MyListPage = () => {
       <h2 className="text-3xl font-bold mb-6">Yadda saxlanılan filmlər</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {savedMovies.map((movie) => (
-          <SlideItem
+          <Card
             key={movie.id}
             movie={movie}
             onClick={() => router.push(`/movie/${movie.id}`)}

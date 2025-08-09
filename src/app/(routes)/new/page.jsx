@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNewMovies } from "@/features/MovieSlice";
-import SlideItem from "@/components/SlideItem/SlideItem";
+import { getNewMovies } from "@/app/redux/features/MovieSlice";
+import Card from "@/components/Card";
 import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 
@@ -49,12 +49,12 @@ const NewPage = () => {
           if (index === uniqueMovies.length - 1) {
             return (
               <div key={movie.id} ref={lastElementRef}>
-                <SlideItem movie={movie} onClick={onClick} />
+                <Card movie={movie} onClick={onClick} />
               </div>
             );
           }
 
-          return <SlideItem key={movie.id} movie={movie} onClick={onClick} />;
+          return <Card key={movie.id} movie={movie} onClick={onClick} />;
         })}
       </div>
 

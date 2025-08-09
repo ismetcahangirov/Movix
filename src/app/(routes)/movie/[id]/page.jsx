@@ -2,26 +2,31 @@
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "next/navigation";
-import {
-  getMovieById,
-  getSimilarMovies,
-  getMovieTrailer,
-} from "@/features/MovieSlice";
+import { useParams, useRouter } from "next/navigation";
+
 import Spinner from "@/components/Spinner";
 import TrailerSlide from "@/components/TrailerSlide";
 import Slide from "@/components/Slide";
 import SaveButton from "@/components/SaveButton";
 import Rating from "@/components/Rating";
+import {
+  getMovieById,
+  getSimilarMovies,
+  getMovieTrailer,
+} from "@/app/redux/features/MovieSlice";
 
 const MoviePage = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { id } = useParams();
   const { movie, status, error, similarMovies, trailer } = useSelector(
     (state) => state.movies
   );
 
+  const { currentUser } = useSelector((state) => state.auth);
+
   useEffect(() => {
+    if (!currentUser) router.push("/login");
     if (id) {
       dispatch(getMovieById(id));
       dispatch(getSimilarMovies(id));

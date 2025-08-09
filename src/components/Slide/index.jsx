@@ -6,6 +6,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const Slide = ({ items }) => {
   const [index, setIndex] = useState(0);
+  const [slideWidth, setSlideWidth] = useState(210);
   const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
 
@@ -14,14 +15,14 @@ const Slide = ({ items }) => {
   );
 
   const rightClick = () => {
-    if (index < uniqueItems.length - 6) {
-      setIndex(index + 6);
+    if (index < uniqueItems.length - 1) {
+      setIndex(index + 1);
     }
   };
 
   const leftClick = () => {
     if (index > 0) {
-      setIndex(index - 6);
+      setIndex(index - 1);
     }
   };
 
@@ -34,20 +35,23 @@ const Slide = ({ items }) => {
   };
 
   return (
-    <div className="relative w-full group">
-      <div className="overflow-hidden">
-        <div
-          className="flex transition-all duration-300 gap-4"
-          style={{ marginLeft: `-${index * 210}px` }}
-        >
-          {uniqueItems.map((movie) => (
-            <SlideItem
-              key={`${movie.id}`}
-              movie={movie}
-              onClick={() => handleImageClick(movie.id)}
-            />
-          ))}
-        </div>
+    <div className="relative w-full group overflow-hidden">
+      <div
+        className="flex transition-all duration-300 md:gap-4"
+        style={{ marginLeft: `-${index * slideWidth}px` }}
+      >
+        {uniqueItems.map((movie, i) => (
+          <SlideItem
+            key={movie.id}
+            movie={movie}
+            onClick={() => handleImageClick(movie.id)}
+            reportWidth={(width) => {
+              if (i === 0 && width !== slideWidth) {
+                setSlideWidth(width);
+              }
+            }}
+          />
+        ))}
       </div>
 
       {index > 0 && (
@@ -70,4 +74,5 @@ const Slide = ({ items }) => {
     </div>
   );
 };
+
 export default Slide;

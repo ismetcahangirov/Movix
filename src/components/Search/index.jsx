@@ -2,7 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { searchMovies, clearSearchResults } from "@/features/MovieSlice";
+import {
+  searchMovies,
+  clearSearchResults,
+} from "@/app/redux/features/MovieSlice";
 import { useRouter } from "next/navigation";
 
 const SearchInput = () => {

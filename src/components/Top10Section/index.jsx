@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Spinner";
 import Slide from "../Slide";
-import { getTop10Movies } from "@/features/MovieSlice";
+import { getTop10Movies } from "@/app/redux/features/MovieSlice";
 
 const Top10Section = () => {
   const dispatch = useDispatch();
