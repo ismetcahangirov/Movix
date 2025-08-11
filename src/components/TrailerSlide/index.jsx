@@ -19,7 +19,7 @@ const TrailerSlide = ({ trailers }) => {
   };
 
   return (
-    <div className="relative w-full h-[450px] group overflow-hidden">
+    <div className="relative w-full h-[200px] md:h-[450px] group overflow-hidden">
       <div className="w-full h-full">
         <div
           className="flex transition-all duration-500 h-full"

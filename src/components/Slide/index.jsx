@@ -37,7 +37,7 @@ const Slide = ({ items }) => {
   return (
     <div className="relative w-full group overflow-hidden">
       <div
-        className="flex transition-all duration-300 md:gap-4"
+        className="flex transition-all duration-300 "
         style={{ marginLeft: `-${index * slideWidth}px` }}
       >
         {uniqueItems.map((movie, i) => (
@@ -63,7 +63,7 @@ const Slide = ({ items }) => {
         </button>
       )}
 
-      {index < uniqueItems.length - 4 && (
+      {index < uniqueItems.length - 6 && (
         <button
           onClick={rightClick}
           className="absolute opacity-0 group-hover:opacity-100 right-0 top-0 h-full px-3 flex items-center bg-black/30 text-white text-xl z-10 transition-all duration-500 ease-in-out"

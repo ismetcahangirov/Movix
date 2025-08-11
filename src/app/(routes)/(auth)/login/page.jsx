@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { loginUser, loginWithGoogle } from "@/firebase/auth";
 
 const LoginPage = () => {
@@ -91,6 +92,13 @@ const LoginPage = () => {
         >
           Google ilə daxil ol
         </button>
+
+        <p className="mt-4 text-left text-white">
+          Hesabınız yoxdur?{" "}
+          <Link href="/register" className="text-blue-400 ml-1 hover:underline">
+            Qeydiyyatdan keçin
+          </Link>
+        </p>
       </form>
     </div>
   );

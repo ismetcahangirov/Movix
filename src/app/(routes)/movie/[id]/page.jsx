@@ -49,7 +49,7 @@ const MoviePage = () => {
           <img
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
-            className="rounded-md w-full object-cover h-[350px]"
+            className="rounded-md w-full object-contain md:object-cover h-[200px]  md:h-[350px]"
           />
 
           <div className="absolute top-3 left-3 z-10">
@@ -57,7 +57,10 @@ const MoviePage = () => {
           </div>
 
           <div className="absolute bottom-3 right-3">
-            <Rating rating={movie.vote_average} size="w-12 h-12 text-lg" />
+            <Rating
+              rating={movie.vote_average}
+              size="w-8 h-8 text-sm md:w-12 md:h-12 md:text-lg"
+            />
           </div>
         </div>
 

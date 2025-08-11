@@ -40,9 +40,9 @@ const PopularPage = () => {
 
   return (
     <div className="text-white container mx-auto max-w-[1280px] py-6 px-4">
-      <h2 className="text-3xl font-bold mb-6">Populyar Filmlər</h2>
+      <h2 className="text-xl md:text-3xl font-bold mb-6">Populyar Filmlər</h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <div className="flex flex-wrap justify-between gap-6  mx-auto">
         {uniqueMovies.map((movie, index) => {
           const onClick = () => router.push(`/movie/${movie.id}`);
 

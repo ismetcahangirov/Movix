@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { registerUser } from "@/firebase/auth";
 
 const RegisterPage = () => {
@@ -27,6 +28,8 @@ const RegisterPage = () => {
     const newErrors = {};
     if (!formData.email.trim()) newErrors.email = "Email daxil edin";
     if (!formData.password) newErrors.password = "Şifrə daxil edin";
+    if (formData.password.length < 6)
+      newErrors.password = "Şifrə ən az 6 simvol olmalıdır";
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Şifrələr uyğun deyil";
     if (!formData.username.trim()) newErrors.username = "Username daxil edin";
@@ -106,6 +109,13 @@ const RegisterPage = () => {
         >
           Register
         </button>
+
+        <p className="mt-4 text-left text-white">
+          Hesabınız var?{" "}
+          <Link href="/login" className="text-blue-400 ml-1 hover:underline">
+            Daxil olun
+          </Link>
+        </p>
       </form>
     </div>
   );

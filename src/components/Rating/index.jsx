@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const Rating = ({ rating, size = "w-8 h-8 text-sm" }) => {
+const Rating = ({ rating, size = "md:w-8 md:h-8 text-sm" }) => {
   const getRatingColor = (rating) => {
     if (rating >= 8) return "bg-green-500";
     if (rating >= 5) return "bg-yellow-400";
