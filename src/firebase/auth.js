@@ -6,13 +6,22 @@ import {
     updateProfile,
     reload,
 } from "firebase/auth";
-import { auth, googleProvider } from "./config";
+import { auth, googleProvider, db } from "./config";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 export const registerUser = async (email, password, displayName) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
+
     await updateProfile(user, { displayName });
     await reload(user);
+
+    await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        username: displayName,
+        email: user.email,
+        createdAt: serverTimestamp(),
+    });
 
     return auth.currentUser;
 };
@@ -25,7 +34,16 @@ export const loginUser = async (email, password) => {
 
 export const loginWithGoogle = async () => {
     const result = await signInWithPopup(auth, googleProvider);
-    return result.user;
+
+    const user = result.user;
+    await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        username: user.displayName || "",
+        email: user.email,
+        createdAt: serverTimestamp(),
+    }, { merge: true });
+
+    return user;
 };
 
 export const logoutUser = async () => {

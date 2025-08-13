@@ -22,7 +22,7 @@ const MyListPage = () => {
       <h2 className="text-xl md:text-3xl font-bold mb-6">
         Yadda saxlanılan filmlər
       </h2>
-      <div className="flex flex-wrap justify-between gap-6  mx-auto">
+      <div className="flex flex-wrap justify-start gap-6  mx-auto">
         {savedMovies.map((movie) => (
           <Card
             key={movie.id}

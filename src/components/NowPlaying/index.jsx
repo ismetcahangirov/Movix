@@ -4,15 +4,15 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../Spinner";
 import Slide from "../Slide";
-import { getUpcomingMovies } from "@/app/redux/features/MovieSlice";
-import { MdUpcoming } from "react-icons/md";
+import { getNewMovies } from "@/app/redux/features/MovieSlice";
+import { MdOutlineMovieFilter } from "react-icons/md";
 
-const UpcomingSection = () => {
+const NowPlayingSection = () => {
   const dispatch = useDispatch();
-  const { upcomingMovies, status } = useSelector((state) => state.movies);
+  const { newMovies, status } = useSelector((state) => state.movies);
 
   useEffect(() => {
-    dispatch(getUpcomingMovies());
+    dispatch(getNewMovies());
   }, [dispatch]);
 
   if (status === "loading") {
@@ -22,11 +22,11 @@ const UpcomingSection = () => {
   return (
     <section className="container mx-auto max-w-[1280px] px-4 py-6 group relative">
       <h2 className="text-white text-xl md:text-3xl font-bold mb-6 text-left flex gap-2 items-center">
-        <MdUpcoming className="text-blue-400" /> Gələcək Filmlər
+        <MdOutlineMovieFilter className="text-red-400" /> Hazırda Kinoteatrlarda
       </h2>
-      <Slide items={upcomingMovies} name={"upcoming"} />
+      <Slide items={newMovies} name={"nowPlaying"} />
     </section>
   );
 };
 
-export default UpcomingSection;
+export default NowPlayingSection;

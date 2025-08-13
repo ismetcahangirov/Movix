@@ -12,7 +12,7 @@ const PopularPage = () => {
   const router = useRouter();
   const { popularMovies, status } = useSelector((state) => state.movies);
   const [page, setPage] = useState(1);
-  const ref = useRef();
+  const observer = useRef();
 
   useEffect(() => {
     dispatch(getPopularMovies(page));
@@ -21,15 +21,15 @@ const PopularPage = () => {
   const lastItemRef = useCallback(
     (node) => {
       if (status === "loading") return;
-      if (ref.current) ref.current.disconnect();
+      if (observer.current) observer.current.disconnect();
 
-      ref.current = new IntersectionObserver((entries) => {
+      observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
           setPage((prev) => prev + 1);
         }
       });
 
-      if (node) ref.current.observe(node);
+      if (node) observer.current.observe(node);
     },
     [status]
   );
@@ -39,10 +39,10 @@ const PopularPage = () => {
   );
 
   return (
-    <div className="text-white container mx-auto max-w-[1280px] py-6 px-4">
+    <div className="text-white container mx-auto max-w-[1280px] py-6 px-4 flex flex-col">
       <h2 className="text-xl md:text-3xl font-bold mb-6">Populyar Filmlər</h2>
 
-      <div className="flex flex-wrap justify-between gap-6  mx-auto">
+      <div className="flex flex-wrap justify-between gap-6 mx-auto">
         {uniqueMovies.map((movie, index) => {
           const onClick = () => router.push(`/movie/${movie.id}`);
 
