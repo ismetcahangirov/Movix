@@ -18,7 +18,9 @@ const HamburgerMenu = ({ currentUser, setMenuOpen }) => {
       <NavLink href="/my-list" onClick={() => setMenuOpen(false)}>
         Mənim siyahılarım
       </NavLink>
-
+      <NavLink href="/#about" onClick={() => setMenuOpen(false)}>
+        Haqqında
+      </NavLink>
       <div className="flex flex-col gap-2">
         {currentUser ? (
           <NavLink href="/dashboard" onClick={() => setMenuOpen(false)}>

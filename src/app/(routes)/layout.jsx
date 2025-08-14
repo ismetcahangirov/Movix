@@ -38,9 +38,9 @@ const RoutesLayout = ({ children }) => {
     <Provider store={store}>
       <AuthProvider>
         <Header />
-        <div className="container mx-auto w-full max-w-[1280px] px-4">
+        <main className="container mx-auto w-full max-w-[1280px] px-4">
           {children}
-        </div>
+        </main>
         <Footer />
       </AuthProvider>
     </Provider>
