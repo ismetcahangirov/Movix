@@ -1,3 +1,4 @@
+import AboutSection from "@/components/AboutSection";
 import NowPlayingSection from "@/components/NowPlaying";
 import Top10Section from "@/components/Top10Section";
 import TopRatedSection from "@/components/TopRatedSection";
@@ -11,6 +12,7 @@ export default function Home() {
       <UpcomingSection />
       <TopRatedSection />
       <NowPlayingSection />
+      <AboutSection />
     </>
   );
 }

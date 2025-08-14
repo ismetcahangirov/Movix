@@ -44,6 +44,12 @@ export default function Navbar() {
           >
             Mənim siyahılarım
           </NavLink>
+          <NavLink
+            href="/#about"
+            className="text-sm whitespace-nowrap min-w-0 truncate"
+          >
+            Haqqında
+          </NavLink>
 
           <SearchInput />
         </div>
