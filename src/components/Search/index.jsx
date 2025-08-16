@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   searchMovies,
   clearSearchResults,
 } from "@/app/redux/features/MovieSlice";
 import { useRouter } from "next/navigation";
+import { FaSearch } from "react-icons/fa";
 
 const SearchInput = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const SearchInput = () => {
   const [value, setValue] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const wrapperRef = useRef(null);
 
   useEffect(() => {
     if (value.trim().length > 0) {
@@ -26,6 +28,17 @@ const SearchInput = () => {
       setHighlightedIndex(-1);
     }
   }, [value, dispatch]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShowResults(false);
+        setHighlightedIndex(-1);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
@@ -65,16 +78,26 @@ const SearchInput = () => {
   };
 
   return (
-    <div className="relative w-max max-w-md">
-      <input
-        type="text"
-        value={value}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Search movies..."
-        className="px-2 py-1 text-sm rounded text-white bg-search placeholder-white/70
-                   w-full md:w-32 lg:w-40 xl:w-48 flex-shrink-0 min-w-[80px] outline-none"
-      />
+    <div className="relative w-max max-w-md" ref={wrapperRef}>
+      <div className="relative">
+        <input
+          type="text"
+          value={value}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Search movies..."
+          className="px-2 pr-8 py-1 text-sm rounded text-white bg-search placeholder-white/70
+                     w-full md:w-32 lg:w-40 xl:w-48 flex-shrink-0 min-w-[80px] outline-none"
+        />
+        <FaSearch
+          onClick={() => {
+            if (searchResults.length > 0) {
+              handleClickResult(searchResults[0].id);
+            }
+          }}
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-white/70 cursor-pointer"
+        />
+      </div>
 
       {showResults && searchResults.length > 0 && (
         <ul className="absolute z-50 w-full bg-gray-800 border border-gray-700 rounded mt-1 max-h-60 overflow-y-auto shadow-lg text-white">
