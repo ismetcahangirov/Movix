@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           type="image/svg+xml"
         />
       </head>
-      <body className={` font-montserrat antialiased bg-midnight flex flex-col justify-between h-screen`}>
+      <body className={` font-montserrat antialiased bg-midnight flex flex-col justify-between min-h-screen`}>
         {children}
       </body>
     </html>

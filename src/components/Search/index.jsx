@@ -100,7 +100,7 @@ const SearchInput = () => {
       </div>
 
       {showResults && searchResults.length > 0 && (
-        <ul className="absolute z-50 w-full bg-gray-800 border border-gray-700 rounded mt-1 max-h-60 overflow-y-auto shadow-lg text-white">
+        <ul className="absolute z-50 w-[250px] bg-gray-800 border border-gray-700 rounded mt-1 max-h-60 overflow-y-auto shadow-lg text-white">
           {searchResults.slice(0, 4).map((movie, index) => (
             <li
               key={movie.id}
