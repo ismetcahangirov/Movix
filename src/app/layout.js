@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           type="image/svg+xml"
         />
 
-        <meta name="google-adsense-account" content="ca-pub-5882535517542517"/>
+        <meta name="google-adsense-account" content="ca-pub-5882535517542517" />
       </head>
       <body className={` font-montserrat antialiased bg-midnight flex flex-col justify-between min-h-screen`}>
         {children}
